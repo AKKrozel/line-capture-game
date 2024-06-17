@@ -1,7 +1,5 @@
 # line-capture-game
 
-# Body-On-Track
-
 This project is a videogame in which the goal is to capture all of the creatures on screen by drawing a line using a mouse to enclose them. In order for the player to win, this must be done without the creatures colliding with the drawn line too many times.
 
 ## Usage
