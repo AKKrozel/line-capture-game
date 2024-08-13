@@ -173,8 +173,8 @@ void CaptureDevice::considerSelfCollision(std::vector<Monster>& monsters) {
         if (!overlappingPixels.empty()) {
             // Create a set of the pixels that will be removed due to self-collision representing the loop drawn
             auto startIter = std::find(heldPixels.begin(), heldPixels.end(), overlappingPixels.front());
-            std::deque<std::pair<int, int>> pixelsToRemove(startIter, heldPixels.end());
-            std::unordered_set<std::pair<int, int>> pixelsToRemoveSet = convertToSet(pixelsToRemove);
+            std::deque<std::pair<int, int>> loop(startIter, heldPixels.end());
+            std::unordered_set<std::pair<int, int>> loopSet = convertToSet(loop);
 
             for (Monster& monster : monsters)
             {
@@ -183,9 +183,9 @@ void CaptureDevice::considerSelfCollision(std::vector<Monster>& monsters) {
                 if (!hurtboxPixels.empty()) {
                     std::pair<int, int> firstPixel = hurtboxPixels[0];
                     // 3 line checks are needed to prevent false enclosement detection. 2 should almost always be enough but 1 line check can be easily abused
-                    if (lineCheck(firstPixel, pixelsToRemoveSet, Direction::UP) &&
-                        lineCheck(firstPixel, pixelsToRemoveSet, Direction::DOWN) &&
-                        lineCheck(firstPixel, pixelsToRemoveSet, Direction::LEFT)) {
+                    if (lineCheck(firstPixel, loopSet, Direction::UP) &&
+                        lineCheck(firstPixel, loopSet, Direction::DOWN) &&
+                        lineCheck(firstPixel, loopSet, Direction::LEFT)) {
                         enclosed = true;
                     }
                 }
