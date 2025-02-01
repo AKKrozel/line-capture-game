@@ -26,6 +26,7 @@ class CaptureDevice {
 public:
     CaptureDevice(double CDHP, int length, sf::RenderWindow& window);
 
+    void reset();
     void update();
     void considerMonsterCollision(Monster& monster, bool& lost);
     void considerSelfCollision(std::vector<Monster>& monster);
@@ -36,12 +37,13 @@ public:
 
 
 
+
 private:
     void addIfAppropriate(int x1, int y1);
     void addLineOfPixels(std::pair<int, int> start, std::pair<int, int> end);
     bool lineCheck(const std::pair<int, int>& start, const std::unordered_set<std::pair<int, int>>& heldPixelsSet, Direction direction);
     bool isDuplicatePixel(int x, int y, int numPixelsToCheck);
-    void drawHealthRectangle(sf::Color color,  float longerLength, float shorterLength);
+    void drawHealthRectangle(sf::Color color, float longerLength, float shorterLength);
     int length;
     int hp;
     int maxHP;

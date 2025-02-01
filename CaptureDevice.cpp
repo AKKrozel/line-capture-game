@@ -19,6 +19,13 @@ CaptureDevice::CaptureDevice(double hp, int length, sf::RenderWindow& window)
     maxHP = hp;
 }
 
+void CaptureDevice::reset() {
+    hp = maxHP;
+    justTookDamage = false;
+    gameOver = false;
+    heldPixels.clear();
+}
+
 void CaptureDevice::update() {
     auto mousePos = sf::Mouse::getPosition(window);
     if (mousePos.x >= 0 && mousePos.x < window.getSize().x &&
@@ -45,7 +52,7 @@ void CaptureDevice::update() {
                 auto front = heldPixels.front();
                 heldPixels.pop_front();
             }
-            
+
         }
         else {
             justTookDamage = false;
@@ -70,7 +77,7 @@ void CaptureDevice::addIfAppropriate(int x1, int y1) {
     }
 }
 
-/*This is an Altered Bresenham's line algorithm that adds an extra pixel whenever there are two tiles only connected by their corners. 
+/*This is an Altered Bresenham's line algorithm that adds an extra pixel whenever there are two tiles only connected by their corners.
 The alteration forces a pixel overlap when the drawn lines cross as the pixels composing the lines will always be adjacent side-to-side, never just corner-to-corner
 The alteration comes at the cost of a less pretty line and slightly higher computation time but is certainly worthwhile*/
 void CaptureDevice::addLineOfPixels(std::pair<int, int> start, std::pair<int, int> end) {
@@ -194,7 +201,7 @@ void CaptureDevice::considerSelfCollision(std::vector<Monster>& monsters) {
                     monster.takeDamage(damageTakenByMonster);
                 }
             }
-            
+
             // Remove pixels after the first duplicate only after dealing with all monsters
             for (const auto& pixel : overlappingPixels) {
                 auto duplicateIter = std::find(std::next(heldPixels.begin(),
@@ -220,9 +227,9 @@ void CaptureDevice::takeDamage(int damage) {
 }
 
 void CaptureDevice::draw() {
-    
+
     sf::RectangleShape pixelShape(sf::Vector2f(1, 1));
-    pixelShape.setFillColor(sf::Color(220,220,255));
+    pixelShape.setFillColor(sf::Color(220, 220, 255));
 
     if (!gameOver) {
         for (const auto& pixel : heldPixels) {
@@ -235,7 +242,7 @@ void CaptureDevice::draw() {
             }
         }
     }
-    
+
     float maxHealthBarWidth = window.getSize().x / screenToHealthConst;
     float healthBarWidth = static_cast<float>(hp) / maxHP * maxHealthBarWidth;
     CaptureDevice::drawHealthRectangle(sf::Color::Red, maxHealthBarWidth, maxHealthBarWidth);
